@@ -1,0 +1,36 @@
+@startuml container
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_TOP_DOWN()
+
+System_Boundary(system, "Finanças App") {
+
+  Container(pwa, "PWA (React)", "TypeScript", "UI offline-first servida por CloudFront/S3")
+  Container_Boundary(aws, "AWS ECS/Fargate") {
+    Container(api, "API Gateway + Service", "Golang", "REST & gRPC; autenticação JWT")
+    Container(worker, "Worker Jobs", "Golang", "ETL e Webhooks")
+  }
+
+  ContainerDb(rds, "TimescaleDB", "PostgreSQL", "Transações & séries temporais")
+  Container(queue, "Redis", "Redis 7", "Cache e Pub/Sub")
+  Container(obsloki, "Loki", "Go", "Logs estruturados")
+  Container(obstempo, "Tempo", "Go", "Distributed Traces")
+}
+
+Container_Ext(ofa, "Open Finance Aggregator", "FAPI-1.0")
+Container_Ext(google, "Google OAuth 2.0", "OAuth 2.0")
+Container_Ext(stripe, "Stripe", "Pagamentos")
+Container_Ext(mpago, "Mercado Pago", "Pagamentos")
+
+Rel(user, pwa, "HTTPS 443")
+Rel(pwa, api, "JSON/HTTPS 443")
+Rel(api, ofa, "REST mTLS 443")
+Rel(api, rds, "JDBC 5432")
+Rel(api, queue, "Pub/Sub 6379")
+Rel(api, obsloki, "Promtail → Loki", "HTTPS 3100")
+Rel(api, obstempo, "OTLP/gRPC 4317")
+Rel(api, stripe, "HTTPS 443")
+Rel(api, mpago, "HTTPS 443")
+
+SHOW_LEGEND()
+@enduml
+

@@ -1,0 +1,25 @@
+@startuml context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+LAYOUT_LEFT_RIGHT()
+
+Person(user, "Usuário", "Pessoa física que controla finanças pessoais")
+System_Boundary(system, "Finanças PWA + API") {
+  System_Ext(pwa, "PWA (Web App)", "Interface web responsiva")
+  System(api, "API Golang", "Backend e serviços de domínio")
+}
+
+System_Ext(ofa, "Open Finance Aggregator", "Coleta dados bancários via FAPI-1.0")
+System_Ext(google, "Google OAuth 2.0", "Autenticação de contas Google")
+System_Ext(stripe, "Stripe", "Processamento de pagamentos globais")
+System_Ext(mpago, "Mercado Pago", "Processamento de pagamentos na América Latina")
+
+Rel(user, pwa, "Usa", "HTTPS 443")
+Rel(pwa, api, "REST/JSON\nmTLS opcional", "HTTPS 443")
+Rel(api, ofa, "Sincroniza contas\n& cartões", "mTLS 443")
+Rel(pwa, google, "Login social", "OAuth2 443")
+Rel(pwa, stripe, "Checkout assinatura", "HTTPS 443")
+Rel(pwa, mpago, "Checkout assinatura", "HTTPS 443")
+
+SHOW_LEGEND()
+@enduml
+
