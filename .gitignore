@@ -3,7 +3,7 @@
 # =========================================
 
 # Sistema operacional
-.DS_Store# macOS 
+.DS_Store # macOS 
 
 # Logs e arquivos temporários
 *.log
