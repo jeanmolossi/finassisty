@@ -1,0 +1,52 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore: ",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "rebaseWhen": "behind-base-branch",
+    "automerge": true
+  },
+  "platformAutomerge": true,
+  "schedule": ["at any time"],
+  "postUpdateOptions": ["gomodTidy", "pnpmDedupe"],
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchDatasources": ["gomod"],
+      "matchUpdateTypes": ["digest", "pin", "patch", "minor"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["gomod"],
+      "matchDatasources": ["gomod"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchManagers": ["pnpm"],
+      "matchDatasources": ["npm"],
+      "matchUpdateTypes": ["digest", "pin", "patch", "minor"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["pnpm"],
+      "matchDatasources": ["npm"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["patch", "minor", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ]
+}
