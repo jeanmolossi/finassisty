@@ -21,3 +21,14 @@ $(DIAGRAMS_DIR)/%.png: $(DIAGRAMS_DIR)/%.puml
 clean:
 	@rm -f $(PNG_FILES)
 	@echo "🧹  Diagramas removidos"
+
+
+.PHONY: pwa-deps api-deps
+install-deps:
+	@echo "✅ Dependencias instaladas"
+
+pwa-deps:
+	cd pwa && pnpm install
+
+api-deps:
+	cd server && go mod download
