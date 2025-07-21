@@ -36,7 +36,6 @@ yarn-debug.log*
 # Cobertura de testes
 /pwa/coverage/
 /pwa/.nyc_output/
-/pwa/coverage/
 /pwa/lib-cov/
 /pwa/*.tgz
 
