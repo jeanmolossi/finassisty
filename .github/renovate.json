@@ -25,13 +25,13 @@
       "automerge": false
     },
     {
-      "matchManagers": ["pnpm"],
+      "matchManagers": ["npm"],
       "matchDatasources": ["npm"],
       "matchUpdateTypes": ["digest", "pin", "patch", "minor"],
       "automerge": true
     },
     {
-      "matchManagers": ["pnpm"],
+      "matchManagers": ["npm"],
       "matchDatasources": ["npm"],
       "matchUpdateTypes": ["major"],
       "automerge": false
