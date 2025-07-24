@@ -33,9 +33,21 @@ pwa-deps:
 api-deps:
 	cd server && go mod download
 
-dev:
+install-reflex:
+	@if ! command -v reflex -h > /dev/null; then \
+		read -p "Go's reflex is not installed. It's needed to hot reload. Do you want to install it? [Y/n] " choice; \
+		if [ "$$choice" != "n" ] && [ "$$choice" != "N" ]; then \
+			go install github.com/cespare/reflex@latest; \
+			if [ ! -x "$$(which reflex -h)" ]; then \
+				echo "Go's reflex installation failed. Exiting..."; \
+				exit 1; \
+			fi; \
+		fi; \
+	fi
+
+dev: install-reflex
 	pnpm --dir app dev & \
-		cd server && go run ./cmd/api
+		cd server && reflex -r '\.go$$' -s -- sh -c "go run ./cmd/api"
 
 install-go-lint:
 	@if ! command golangci-lint -v > /dev/null; then \
