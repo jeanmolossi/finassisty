@@ -23,12 +23,16 @@ clean:
 	@echo "🧹  Diagramas removidos"
 
 
-.PHONY: pwa-deps api-deps
+.PHONY: pwa-deps api-deps dev
 install-deps:
-	@echo "✅ Dependencias instaladas"
+        @echo "✅ Dependencias instaladas"
 
 pwa-deps:
-	cd pwa && pnpm install
+        cd app && pnpm install
 
 api-deps:
-	cd server && go mod download
+        cd server && go mod download
+
+dev:
+        pnpm --dir app dev & \
+        cd server && go run ./cmd/api
