@@ -75,6 +75,7 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 ![./docs/architecture/container.png](./docs/architecture/container.png)
 
 > [!NOTE]
+>
 > Ambos os diagramas goram criados com PlantUML e seguem o padrão C4.
 > Os arquivos fontes estão em `docs/architecture/context.puml` e `docs/architecture/container.puml`.
 
@@ -97,6 +98,7 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 5. Aguarde revisão
 
 > [!IMPORTANT]
+>
 > Antes de abrir o PR, certifique-se de que todos os diagramas em `docs/architecture/*.puml`
 > estejam em sincronia com os PNGs (rode `make docs`)
 
