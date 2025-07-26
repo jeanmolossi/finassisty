@@ -23,12 +23,46 @@ clean:
 	@echo "🧹  Diagramas removidos"
 
 
-.PHONY: pwa-deps api-deps
-install-deps:
+.PHONY: pwa-deps api-deps dev
+install-deps: pwa-deps api-deps
 	@echo "✅ Dependencias instaladas"
 
 pwa-deps:
-	cd pwa && pnpm install
+	cd app && pnpm install
 
 api-deps:
 	cd server && go mod download
+
+install-reflex:
+	@if ! command -v reflex -h > /dev/null; then \
+		read -p "Go's reflex is not installed. It's needed to hot reload. Do you want to install it? [Y/n] " choice; \
+		if [ "$$choice" != "n" ] && [ "$$choice" != "N" ]; then \
+			go install github.com/cespare/reflex@latest; \
+			if [ ! -x "$$(which reflex -h)" ]; then \
+				echo "Go's reflex installation failed. Exiting..."; \
+				exit 1; \
+			fi; \
+		fi; \
+	fi
+
+dev: install-reflex
+	pnpm --dir app dev & \
+		cd server && reflex -r '\.go$$' -s -- sh -c "go run ./cmd/api"
+
+install-go-lint:
+	@if ! command golangci-lint -v > /dev/null; then \
+		read -p "Go's linter is not installed on your machine. Do you want to install it? [Y/n] " choice; \
+		if [ "$$choice" != "n" ] && [ "$$choice" != "N" ]; then \
+			curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.1.6; \
+			if [ ! -x "$$(command golangci-lint -v)" ]; then \
+				echo "Go linter installation failed. Exiting..."; \
+				exit 1; \
+			fi; \
+		fi; \
+	fi
+
+install-js-lint:
+
+lint: install-go-lint install-js-lint
+	@golangci-lint run ./...
+	@pnpm --dir app run tsc --noEmit
