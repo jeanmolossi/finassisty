@@ -5,6 +5,11 @@ export const Route = createRootRoute({
     component: RootComponent,
 });
 
+/**
+ * Renders the root layout with a navigation bar and an outlet for nested routes.
+ *
+ * Displays navigation links to the main sections of the application and renders child route components via the outlet.
+ */
 function RootComponent() {
     return (
         <React.Fragment>

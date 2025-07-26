@@ -3,6 +3,11 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({ component: Home });
 
+/**
+ * Renders the home page with a heading and a toggle switch UI.
+ *
+ * Displays the "Finassisty Home" title and a switch initialized in the checked state.
+ */
 function Home() {
     return (
         <main className="p-4">

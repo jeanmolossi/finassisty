@@ -8,6 +8,11 @@ export const Route = createFileRoute("/about/")({
     loader: async () => loader(),
 });
 
+/**
+ * Renders the About page, displaying a heading, a toggle switch, and the route loader data as formatted JSON.
+ *
+ * Uses data loaded by the route's loader to populate the page content.
+ */
 function AboutPage() {
     const loaderData = Route.useLoaderData();
 
