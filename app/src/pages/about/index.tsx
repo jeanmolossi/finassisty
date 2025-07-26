@@ -1,8 +1,8 @@
-import { useLoaderData } from "react-router";
+import { aboutRoute } from "@/router/routes";
 import { Switch } from "@base-ui-components/react/switch";
 
 export default function Home() {
-    const loaderData = useLoaderData();
+    const loaderData = aboutRoute.useLoaderData();
 
     return (
         <main className="p-4">

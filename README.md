@@ -55,6 +55,8 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
   cd server
   # Variaveis de ambiente em .env.local
   go run ./cmd/api
+
+  # Endpoints estao versionados em /api/v1
 ```
 
 ### Comandos úteis
