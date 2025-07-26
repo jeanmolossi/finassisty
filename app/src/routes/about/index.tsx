@@ -1,8 +1,15 @@
-import { aboutRoute } from "@/router/routes";
 import { Switch } from "@base-ui-components/react/switch";
+import { createFileRoute } from "@tanstack/react-router";
+import loader from "./loader";
 
-export default function Home() {
-    const loaderData = aboutRoute.useLoaderData();
+export const Route = createFileRoute("/about/")({
+    component: AboutPage,
+    wrapInSuspense: true,
+    loader: async () => loader(),
+});
+
+function AboutPage() {
+    const loaderData = Route.useLoaderData();
 
     return (
         <main className="p-4">
