@@ -1,0 +1,111 @@
+version: '3.9'
+services:
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/loki.yaml
+    volumes:
+      - ./loki.yaml:/etc/loki/loki.yaml
+      - loki-data:/data
+    ports:
+      - "9096:9096" # gRPC
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9096"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: '512m'
+
+  tempo:
+    image: grafana/tempo:latest
+    command: -config.file=/etc/tempo/tempo.yaml
+    volumes:
+      - ./tempo.yaml:/etc/tempo/tempo.yaml
+      - tempo-data:/data
+    ports:
+      - "4317:4317" # OTLP/gRPC
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9095"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: '512m'
+
+  mimir:
+    image: grafana/mimir:latest
+    command: -config.file=/etc/mimir/mimir.yaml
+    volumes:
+      - ./mimir.yaml:/etc/mimir/mimir.yaml
+      - mimir-data:/data
+    ports:
+      - "9097:9095" # gRPC
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9095"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: '512m'
+
+  promtail:
+    image: grafana/promtail:latest
+    command: -config.file=/etc/promtail/promtail.yaml
+    volumes:
+      - ./promtail.yaml:/etc/promtail/promtail.yaml
+      - /var/log:/var/log
+    depends_on:
+      - loki
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep promtail"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.2'
+          memory: '256m'
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - loki
+      - tempo
+      - mimir
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 3000"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '0.4'
+          memory: '512m'
+
+volumes:
+  loki-data:
+  tempo-data:
+  mimir-data:
