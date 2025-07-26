@@ -1,0 +1,15 @@
+{
+  "name": "Finassisty App",
+  "short_name": "Finassisty",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Finassisty PWA",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -18,7 +18,7 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 2. Veja a estrutura
 
 - `docs/architecture/` – diagramas C4 em PlantUML e PNG
-- `pwa/` – código da Progressive Web App (React + TypeScript)
+- `app/` – código da Progressive Web App (React + TypeScript)
 - `api/` – backend em Golang (ECS/Fargate)
 - `infra/` – configurações de infraestrutura (CloudFormation/Terraform)
 - `Makefile` – comandos úteis (incluindo make docs)
@@ -43,11 +43,10 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 
 ## Desenvolvimento
 
-### PWA
+### Frontend
 
 ```bash
-  cd pwa
-  pnpm run dev
+  make dev
 ```
 
 ### Server
@@ -62,7 +61,7 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 
 - `make docs` - gera/atualiza PNG dos diagramas PlantUML
 - `make clean` - remove os PNG gerados
-- `pnpm run test` - Executa os testes da PWA
+- `pnpm run test` - Executa os testes do frontend
 - `go test ./...` - Executa testes da API
 
 ## Arquitetura
