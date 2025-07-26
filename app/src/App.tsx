@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet } from "@tanstack/react-router";
 
 export default function App() {
     return (
