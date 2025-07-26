@@ -13,9 +13,6 @@ distributor:
     kvstore:
       store: inmemory
 ingester:
-  wal:
-    dir: /data/wal
-  lifecycler:
-    ring:
-      kvstore:
-        store: inmemory
+  ring:
+    kvstore:
+      store: inmemory

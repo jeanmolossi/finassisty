@@ -4,14 +4,14 @@ server:
   grpc_listen_port: 9096
 common:
   path_prefix: /data/loki
+  storage:
+    filesystem:
+      chunks_directory: /data/loki/chunks
+      rules_directory: /data/loki/rules
   replication_factor: 1
   ring:
     kvstore:
       store: inmemory
-storage_config:
-  filesystem:
-    chunks_directory: /data/loki/chunks
-    rules_directory: /data/loki/rules
 schema_config:
   configs:
     - from: 2020-10-24
