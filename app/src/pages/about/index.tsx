@@ -1,4 +1,4 @@
-import { aboutRoute } from "../../router/routes";
+import { aboutRoute } from "@/router/routes";
 import { Switch } from "@base-ui-components/react/switch";
 
 export default function Home() {
