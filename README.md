@@ -59,6 +59,20 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
   # Endpoints estao versionados em /api/v1
 ```
 
+### Configurando Google OAuth
+
+1. Acesse o [Google Cloud Console](https://console.cloud.google.com/).
+2. Crie um novo projeto e ative a API **OAuth2**.
+3. Em **Credenciais**, gere um "ID do cliente OAuth" para aplicativo Web.
+4. Adicione `http://localhost:8080/api/v1/auth/google/callback` como URI de redirecionamento autorizado.
+5. Copie o **Client ID** e o **Client Secret** e defina no `.env.local`:
+
+```bash
+GOOGLE_CLIENT_ID=<sua-chave>
+GOOGLE_CLIENT_SECRET=<seu-segredo>
+GOOGLE_REDIRECT_URL=http://localhost:8080/api/v1/auth/google/callback
+```
+
 ### Comandos úteis
 
 - `make docs` - gera/atualiza PNG dos diagramas PlantUML
