@@ -5,6 +5,9 @@ on:
     paths-ignore:
       - 'docs/**'
 
+permissions:
+  contents: read
+
 jobs:
   golang:
     runs-on: ubuntu-latest
