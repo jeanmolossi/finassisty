@@ -60,7 +60,7 @@ install-go-lint:
 	@if ! command golangci-lint -v > /dev/null; then \
 		read -p "Go's linter is not installed on your machine. Do you want to install it? [Y/n] " choice; \
 		if [ "$$choice" != "n" ] && [ "$$choice" != "N" ]; then \
-                        curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.3.0; \
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.3.0; \
 			if [ ! -x "$$(command golangci-lint -v)" ]; then \
 				echo "Go linter installation failed. Exiting..."; \
 				exit 1; \
@@ -71,6 +71,6 @@ install-go-lint:
 install-js-lint:
 
 lint: install-go-lint install-js-lint
-@golangci-lint run ./...
-@pnpm --dir app run tsc --noEmit
-@pnpm --dir app exec eslint src --ext ts,tsx
+	@golangci-lint run ./...
+	@pnpm --dir app run tsc --noEmit
+	@pnpm --dir app exec eslint src --ext ts,tsx
