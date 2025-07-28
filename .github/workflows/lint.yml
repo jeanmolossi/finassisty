@@ -1,0 +1,38 @@
+name: Lint
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+
+jobs:
+  golang:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.3.0
+          only-new-issues: true
+          args: ./...
+
+  pwa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: app
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+        working-directory: app
