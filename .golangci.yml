@@ -11,4 +11,11 @@ linters:
     - staticcheck
   settings:
     revive:
+      max-open-files: 2048
+      severity: error
+      enable-all-rules: true
+      directives:
+        - name: specify-disable-reason
+          severity: error
+      confidence: 0.1
       ignore-generated-header: true
