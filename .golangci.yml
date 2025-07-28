@@ -10,6 +10,6 @@ linters:
     - revive
     - staticcheck
 
-linters-settings:
+settings:
   revive:
     ignore-generated-header: true
