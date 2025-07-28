@@ -2,7 +2,10 @@ package main
 
 import (
 	"context"
+	"finassisty/server/config"
+	"finassisty/server/infrastructure/support/telemetry"
 	"finassisty/server/v1/controllers"
+	"finassisty/server/v1/middlewares"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,11 +17,22 @@ import (
 )
 
 func main() {
+	config.Env() // load env
+
+	ctx := context.Background()
+
+	err := telemetry.StartCollectors(ctx)
+	if err != nil {
+		panic(err)
+	}
+
 	e := echo.New()
 	e.HideBanner = true
 
-	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use(middlewares.OTel())
+	e.Use(middlewares.MetrifyRequest())
+	e.Use(middlewares.Logger())
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"http://*", "https://*"},
