@@ -28,17 +28,20 @@ type ExporterOTLPConfig struct {
 	Logs    OTLPDataConfig `envPrefix:"LOGS_"`
 }
 
+// GoogleOAuth holds credential configuration for OAuth login.
+type GoogleOAuth struct {
+	ClientID     string `env:"GOOGLE_CLIENT_ID"`
+	ClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
+	RedirectURL  string `env:"GOOGLE_REDIRECT_URL"`
+}
+
 // Config represents the full environment configuration parsed from .env.
 type Config struct {
 	AppName string `env:"APP_NAME" envDefault:"Finassisty"`
 
 	OTelExporter ExporterOTLPConfig `envPrefix:"OTEL_EXPORTER_OTLP_"`
 
-	GoogleOAuth struct {
-		ClientID     string `env:"GOOGLE_CLIENT_ID"`
-		ClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
-		RedirectURL  string `env:"GOOGLE_REDIRECT_URL"`
-	}
+	GoogleOAuth GoogleOAuth
 }
 
 var (
