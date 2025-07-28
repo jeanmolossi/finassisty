@@ -29,10 +29,9 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
-      - name: Setup pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+      - uses: pnpm/action-setup@v3
+        with:
+          version: latest
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         working-directory: app
