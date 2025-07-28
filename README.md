@@ -68,6 +68,7 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 5. Copie o **Client ID** e o **Client Secret** e defina no `.env.local`:
 
 ```bash
+# substitua <sua-chave> e <seu-segredo> pelos valores obtidos no Google Cloud
 GOOGLE_CLIENT_ID=<sua-chave>
 GOOGLE_CLIENT_SECRET=<seu-segredo>
 GOOGLE_REDIRECT_URL=http://localhost:8080/api/v1/auth/google/callback

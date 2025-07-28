@@ -30,9 +30,9 @@ type ExporterOTLPConfig struct {
 
 // GoogleOAuth holds credential configuration for OAuth login.
 type GoogleOAuth struct {
-	ClientID     string `env:"GOOGLE_CLIENT_ID"`
-	ClientSecret string `env:"GOOGLE_CLIENT_SECRET"`
-	RedirectURL  string `env:"GOOGLE_REDIRECT_URL"`
+	ClientID     string `env:"CLIENT_ID"`
+	ClientSecret string `env:"CLIENT_SECRET"`
+	RedirectURL  string `env:"REDIRECT_URL"`
 }
 
 // Config represents the full environment configuration parsed from .env.
@@ -41,7 +41,7 @@ type Config struct {
 
 	OTelExporter ExporterOTLPConfig `envPrefix:"OTEL_EXPORTER_OTLP_"`
 
-	GoogleOAuth GoogleOAuth
+	GoogleOAuth GoogleOAuth `envPrefix:"GOOGLE_"`
 }
 
 var (

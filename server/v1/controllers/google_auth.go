@@ -16,14 +16,20 @@ import (
 	"google.golang.org/api/option"
 )
 
+const (
+	stateByteLen = 16
+	emptyStr     = ""
+)
+
 func newGoogleOAuthConfig() (*oauth2.Config, error) {
 	creds := config.Env().GoogleOAuth
-	switch {
-	case creds.ClientID == "":
+	if creds.ClientID == emptyStr {
 		return nil, errors.New("google client id missing")
-	case creds.ClientSecret == "":
+	}
+	if creds.ClientSecret == emptyStr {
 		return nil, errors.New("google client secret missing")
-	case creds.RedirectURL == "":
+	}
+	if creds.RedirectURL == emptyStr {
 		return nil, errors.New("google redirect url missing")
 	}
 
@@ -42,7 +48,7 @@ func newGoogleOAuthConfig() (*oauth2.Config, error) {
 }
 
 func randomState() (string, error) {
-	b := make([]byte, 16)
+	b := make([]byte, stateByteLen)
 	if _, err := rand.Read(b); err != nil {
 		return "", err
 	}
