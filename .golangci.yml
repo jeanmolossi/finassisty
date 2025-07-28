@@ -11,4 +11,4 @@ linters:
     - staticcheck
   settings:
     revive:
-      ignoreGeneratedHeader: true
+      ignore-generated-header: true
