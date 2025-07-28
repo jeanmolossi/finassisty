@@ -2,6 +2,9 @@
 package controllers
 
 import (
+	"crypto/rand"
+	"encoding/base64"
+	"errors"
 	"net/http"
 
 	"finassisty/server/config"
@@ -13,54 +16,117 @@ import (
 	"google.golang.org/api/option"
 )
 
-var googleOAuthConfig = &oauth2.Config{
-	ClientID:     config.Env().GoogleOAuth.ClientID,
-	ClientSecret: config.Env().GoogleOAuth.ClientSecret,
-	RedirectURL:  config.Env().GoogleOAuth.RedirectURL,
-	Scopes: []string{
-		oauth2api.UserinfoEmailScope,
-		oauth2api.UserinfoProfileScope,
-	},
-	Endpoint: google.Endpoint,
+func newGoogleOAuthConfig() (*oauth2.Config, error) {
+	creds := config.Env().GoogleOAuth
+	switch {
+	case creds.ClientID == "":
+		return nil, errors.New("google client id missing")
+	case creds.ClientSecret == "":
+		return nil, errors.New("google client secret missing")
+	case creds.RedirectURL == "":
+		return nil, errors.New("google redirect url missing")
+	}
+
+	cfg := &oauth2.Config{
+		ClientID:     creds.ClientID,
+		ClientSecret: creds.ClientSecret,
+		RedirectURL:  creds.RedirectURL,
+		Scopes: []string{
+			oauth2api.UserinfoEmailScope,
+			oauth2api.UserinfoProfileScope,
+		},
+		Endpoint: google.Endpoint,
+	}
+
+	return cfg, nil
+}
+
+func randomState() (string, error) {
+	b := make([]byte, 16)
+	if _, err := rand.Read(b); err != nil {
+		return "", err
+	}
+	return base64.RawURLEncoding.EncodeToString(b), nil
 }
 
 // GoogleLogin redirects the user to Google's OAuth consent screen.
 func GoogleLogin(c echo.Context) error {
-	url := googleOAuthConfig.AuthCodeURL(
-		"state-token",
-		oauth2.AccessTypeOffline,
-	)
+	oauthCfg, err := newGoogleOAuthConfig()
+	if err != nil {
+		c.Logger().Error(err)
+		return c.JSON(http.StatusInternalServerError,
+			map[string]string{"error": "oauth not configured"})
+	}
+
+	state, err := randomState()
+	if err != nil {
+		c.Logger().Error(err)
+		return c.JSON(http.StatusInternalServerError,
+			map[string]string{"error": "could not start oauth"})
+	}
+
+	cookie := &http.Cookie{
+		Name:     "oauth_state",
+		Value:    state,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   c.IsTLS(),
+		SameSite: http.SameSiteLaxMode,
+	}
+	c.SetCookie(cookie)
+
+	url := oauthCfg.AuthCodeURL(state, oauth2.AccessTypeOffline)
 	return c.Redirect(http.StatusTemporaryRedirect, url)
 }
 
 // GoogleCallback exchanges the OAuth code and returns the user info.
 func GoogleCallback(c echo.Context) error {
-	ctx := c.Request().Context()
+	oauthCfg, err := newGoogleOAuthConfig()
+	if err != nil {
+		c.Logger().Error(err)
+		return c.JSON(http.StatusInternalServerError,
+			map[string]string{"error": "oauth not configured"})
+	}
+
+	state := c.QueryParam("state")
+	cookie, cErr := c.Cookie("oauth_state")
+	if state == "" || cErr != nil || cookie.Value != state {
+		return c.JSON(http.StatusBadRequest,
+			map[string]string{"error": "invalid state"})
+	}
+
+	// clear state cookie
+	c.SetCookie(&http.Cookie{Name: "oauth_state", Value: "", Path: "/", MaxAge: -1})
+
 	code := c.QueryParam("code")
 	if code == "" {
 		return c.JSON(http.StatusBadRequest,
-			map[string]string{"error": "code missing"},
-		)
+			map[string]string{"error": "code missing"})
 	}
 
-	token, err := googleOAuthConfig.Exchange(ctx, code)
+	ctx := c.Request().Context()
+	token, err := oauthCfg.Exchange(ctx, code)
 	if err != nil {
+		c.Logger().Error(err)
 		return c.JSON(http.StatusBadRequest,
-			map[string]string{"error": "token exchange failed"},
-		)
+			map[string]string{"error": "token exchange failed"})
 	}
 
 	srv, err := oauth2api.NewService(
 		ctx,
-		option.WithTokenSource(googleOAuthConfig.TokenSource(ctx, token)),
+		option.WithTokenSource(oauthCfg.TokenSource(ctx, token)),
 	)
 	if err != nil {
-		return err
+		c.Logger().Error(err)
+		return c.JSON(http.StatusInternalServerError,
+			map[string]string{"error": "failed to get user info"})
 	}
 
 	user, err := srv.Userinfo.Get().Do()
 	if err != nil {
-		return err
+		c.Logger().Error(err)
+		return c.JSON(http.StatusInternalServerError,
+			map[string]string{"error": "failed to get user info"})
 	}
 
 	return c.JSON(http.StatusOK, user)
