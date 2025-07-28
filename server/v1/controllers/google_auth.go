@@ -102,10 +102,15 @@ func GoogleCallback(c echo.Context) error {
 	}
 
 	// clear state cookie
-	c.SetCookie(&http.Cookie{Name: "oauth_state", Value: "", Path: "/", MaxAge: -1})
+	c.SetCookie(&http.Cookie{
+		Name:   "oauth_state",
+		Value:  emptyStr,
+		Path:   "/",
+		MaxAge: -1,
+	})
 
 	code := c.QueryParam("code")
-	if code == "" {
+	if code == emptyStr {
 		return c.JSON(http.StatusBadRequest,
 			map[string]string{"error": "code missing"})
 	}
