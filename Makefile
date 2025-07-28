@@ -49,6 +49,13 @@ dev: install-reflex
 	pnpm --dir app dev & \
 		cd server && reflex -r '\.go$$' -s -- sh -c "go run ./cmd/api"
 
+monitoring:
+	@docker compose -f ./infra/monitoring/docker-compose.yml up -d; \
+		bash -c "trap 'trap - SIGINT SIGTERM ERR; \
+			docker compose -f ./infra/monitoring/docker-compose.yml down -v; \
+			exit 1' SIGINT SIGTERM ERR; \
+			docker logs -f monitoring-alloy-1"
+
 install-go-lint:
 	@if ! command golangci-lint -v > /dev/null; then \
 		read -p "Go's linter is not installed on your machine. Do you want to install it? [Y/n] " choice; \

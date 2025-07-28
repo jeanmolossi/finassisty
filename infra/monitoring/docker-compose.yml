@@ -1,11 +1,40 @@
-version: '3.9'
+version: "3.9"
 services:
+  alloy:
+    image: grafana/alloy:latest
+    command:
+      - "run"
+      - "--config.extra-args=-config.expand-env"
+      - "/etc/alloy/config.alloy"
+    volumes:
+      - ./alloy.alloy:/etc/alloy/config.alloy:ro
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    restart: unless-stopped
+    env_file:
+      - ../../.env
+    environment:
+      - HTTP_PROXY=
+      - HTTPS_PROXY=
+      - NO_PROXY=tempo,mimir
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost:4318"]
+      interval: 30s
+      timeout: 3s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "512m"
+
   loki:
     image: grafana/loki:latest
-    command: -config.file=/etc/loki/loki.yaml
+    command: [-config.file=/etc/loki/loki.yaml, -config.expand-env=true]
     volumes:
       - ./loki.yaml:/etc/loki/loki.yaml
-      - loki-data:/data
+      - loki-data:/tmp
     ports:
       - "9096:9096" # gRPC
     restart: unless-stopped
@@ -17,18 +46,19 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'
-          memory: '512m'
+          cpus: "0.4"
+          memory: "512m"
 
   tempo:
     image: grafana/tempo:latest
-    command: -config.file=/etc/tempo/tempo.yaml
+    command: [-config.file=/etc/tempo/tempo.yaml, -config.expand-env=true]
     volumes:
       - ./tempo.yaml:/etc/tempo/tempo.yaml
-      - tempo-data:/data
+      - tempo-data:/tmp
     ports:
-      - "4317:4317" # OTLP/gRPC
+      - "4319:4317" # OTLP/gRPC
     restart: unless-stopped
+    env_file: ../../.env
     healthcheck:
       test: ["CMD-SHELL", "nc -z localhost 9095"]
       interval: 30s
@@ -37,8 +67,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'
-          memory: '512m'
+          cpus: "0.4"
+          memory: "512m"
 
   mimir:
     image: grafana/mimir:latest
@@ -57,28 +87,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'
-          memory: '512m'
-
-  promtail:
-    image: grafana/promtail:latest
-    command: -config.file=/etc/promtail/promtail.yaml
-    volumes:
-      - ./promtail.yaml:/etc/promtail/promtail.yaml
-      - /var/log:/var/log
-    depends_on:
-      - loki
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pgrep promtail"]
-      interval: 30s
-      timeout: 3s
-      retries: 5
-    deploy:
-      resources:
-        limits:
-          cpus: '0.2'
-          memory: '256m'
+          cpus: "0.4"
+          memory: "512m"
 
   grafana:
     image: grafana/grafana:latest
@@ -102,8 +112,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.4'
-          memory: '512m'
+          cpus: "0.4"
+          memory: "512m"
 
 volumes:
   loki-data:

@@ -1,23 +1,36 @@
 auth_enabled: false
 server:
-  http_listen_port: 3100
-  grpc_listen_port: 9096
+    http_listen_port: 3100
+    grpc_listen_port: 9096
+
 common:
-  path_prefix: /data/loki
-  storage:
+    path_prefix: /tmp/loki
+    replication_factor: 1
+    ring:
+        kvstore:
+            store: inmemory
+
+storage_config:
+    tsdb_shipper:
+        active_index_directory: /tmp/loki/index
+        cache_location: /tmp/loki/index_cache
     filesystem:
-      chunks_directory: /data/loki/chunks
-      rules_directory: /data/loki/rules
-  replication_factor: 1
-  ring:
-    kvstore:
-      store: inmemory
+        directory: /tmp/loki/chunks
+
+ingester:
+    chunk_encoding: snappy
+    lifecycler:
+        ring:
+            kvstore:
+                store: inmemory
+            replication_factor: 1
+
 schema_config:
-  configs:
-    - from: 2020-10-24
-      store: tsdb
-      object_store: filesystem
-      schema: v13
-      index:
-        prefix: index_
-        period: 24h
+    configs:
+        - from: 2025-01-01
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index:
+              prefix: index_
+              period: 24h

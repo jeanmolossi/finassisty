@@ -1,5 +1,10 @@
 # Node
 app/node_modules/
 app/dist/
+
 # Logs
 *.log
+
+# Env
+.env*
+!.env.example*

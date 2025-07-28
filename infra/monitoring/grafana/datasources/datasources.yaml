@@ -14,6 +14,28 @@ datasources:
     url: http://tempo:3200
     uid: tempo
     editable: false
+    jsonData:
+      httpUrl: http://tempo:3200
+      httpMethod: GET
+      tracesToLogsV2:
+        datasourceUid: "loki"
+        spanStartTimeShift: "-1h"
+        spanEndTimeShift: "1h"
+        tags: ["job", "instance", "service_name"]
+        filterByTraceID: false
+        filterBySpanID: false
+        customQuery: true
+        query: 'method="$${__span.tags.method}"'
+      tracesToMetrics:
+        datasourceUid: "mimir"
+        spanStartTimeShift: "-1h"
+        spanEndTimeShift: "1h"
+        tags: [{ key: "service.name", value: "service" }, { key: "job" }]
+        queries:
+          - name: "Sample query"
+            query: "sum(rate(traces_spanmetrics_latency_bucket{$$__tags}[5m]))"
+    isDefault: true
+    basicAuth: false
 
   - name: Mimir
     type: prometheus
