@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
+          cache-dependency-path: app/pnpm-lock.yaml
       - name: Build PWA
         run: pnpm run build
         working-directory: app

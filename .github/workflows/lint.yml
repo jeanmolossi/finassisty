@@ -36,6 +36,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
+          cache-dependency-path: app/pnpm-lock.yaml
       - name: Type check
         run: pnpm exec tsc --noEmit
         working-directory: app

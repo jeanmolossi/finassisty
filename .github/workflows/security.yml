@@ -35,6 +35,7 @@ jobs:
         with:
           node-version: '22'
           cache: 'pnpm'
+          cache-dependency-path: app/pnpm-lock.yaml
       - name: Audit dependencies
         run: pnpm audit --audit-level=high
         working-directory: app
