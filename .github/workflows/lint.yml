@@ -36,3 +36,6 @@ jobs:
       - name: Type check
         run: pnpm exec tsc --noEmit
         working-directory: app
+      - name: ESLint
+        run: pnpm exec eslint src --ext ts,tsx
+        working-directory: app

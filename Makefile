@@ -71,5 +71,6 @@ install-go-lint:
 install-js-lint:
 
 lint: install-go-lint install-js-lint
-	@golangci-lint run ./...
-	@pnpm --dir app run tsc --noEmit
+@golangci-lint run ./...
+@pnpm --dir app run tsc --noEmit
+@pnpm --dir app exec eslint src --ext ts,tsx

@@ -1,0 +1,15 @@
+version: 2
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - errcheck
+    - gosec
+    - govet
+    - revive
+    - staticcheck
+
+linters-settings:
+  revive:
+    ignore-generated-header: true
