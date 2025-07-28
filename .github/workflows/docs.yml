@@ -1,32 +1,30 @@
 name: Build diagrams
 
 on:
-    push:
-        paths: ["docs/architecture/*.puml", "Makefile"]
-    pull_request:
-        paths: ["docs/architecture/*.puml", "Makefile"]
+  pull_request:
+    paths: ["docs/architecture/*.puml", "Makefile"]
 
 permissions:
-    contents: write
+  contents: write
 
 jobs:
-    plantuml:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              if: github.event_name == 'pull_request'
-              with:
-                  repository: ${{ github.event.pull_request.head.repo.full_name }}
-                  ref: ${{ github.event.pull_request.head.ref }}
-                  fetch-depth: 0
+  plantuml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        if: github.event_name == 'pull_request'
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
 
-            - name: Gera PNGs (make docs)
-              run: make docs
+      - name: Gera PNGs (make docs)
+        run: make docs
 
-            - name: Commit PNGs atualizados
-              uses: EndBug/add-and-commit@v9
-              with:
-                  add: "docs/architecture/*.png"
-                  message: "docs: update puml diagrams by CI"
-                  default_author: github_actions
-                  # push: "origin HEAD:${{ github.head_ref }}"
+      - name: Commit PNGs atualizados
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "docs/architecture/*.png"
+          message: "docs: update puml diagrams by CI"
+          default_author: github_actions
+          # push: "origin HEAD:${{ github.head_ref }}"

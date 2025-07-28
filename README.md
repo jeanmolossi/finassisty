@@ -106,9 +106,16 @@ Siga estes passos para clonar o projeto e já começar a explorá-lo:
 
 ## Monitoramento
 
-- **Logs**: enviados para Loki via Promtail (HTTP 3100).
-- **Traces**: coletados pelo Tempo via OTLP/gRPC (porta 4317).
-- **Métricas**: expostas pela API em `/metrics` (Prometheus).
+- **Logs**: enviados via Promtail para o Loki usando gRPC (porta 9096).
+- **Traces**: coletados pelo Tempo via OTLP gRPC (porta 4317).
+- **Métricas**: enviadas para o Mimir usando gRPC (porta 9095).
 - **Alertas**: configurados no Grafana via Email/Discord/Telegram.
+
+Inicie a stack de observabilidade localmente (os containers possuem healthchecks
+e limites de recursos) com:
+
+```bash
+docker compose -f infra/monitoring/docker-compose.yml up -d
+```
 
 Para ajustar ou inspecionar regras de alerta, veja `infra/monitoring/`.
