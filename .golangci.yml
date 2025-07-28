@@ -1,0 +1,19 @@
+version: "2"
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - errcheck
+    - gosec
+    - govet
+    - revive
+    - staticcheck
+  settings:
+    revive:
+      max-open-files: 2048
+      severity: error
+      enable-all-rules: true
+      directives:
+        - name: specify-disable-reason
+          severity: error
