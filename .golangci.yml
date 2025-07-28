@@ -9,7 +9,6 @@ linters:
     - govet
     - revive
     - staticcheck
-
-settings:
-  revive:
-    ignore-generated-header: true
+  settings:
+    revive:
+      ignore-generated-header: true
