@@ -26,13 +26,13 @@ jobs:
       - uses: pnpm/action-setup@v3
         with:
           version: latest
+          run_install: |
+            cwd: app
+            args: [--frozen-lockfile]
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        working-directory: app
       - name: Build PWA
         run: pnpm run build
         working-directory: app
