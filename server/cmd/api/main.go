@@ -44,6 +44,8 @@ func main() {
 	api := e.Group("/api/v1")
 	api.GET("/hello", controllers.Hello)
 	api.GET("/healthcheck", controllers.Healthcheck)
+	api.GET("/auth/google/login", controllers.GoogleLogin)
+	api.GET("/auth/google/callback", controllers.GoogleCallback)
 
 	staticDir := "app/dist"
 	if _, err := os.Stat(staticDir); os.IsNotExist(err) {
