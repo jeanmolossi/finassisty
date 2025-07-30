@@ -1,11 +1,11 @@
-import { StartServer } from "@tanstack/react-router-server/dist/esm/server";
-import { createRouter } from "@tanstack/react-router";
-import { routeTree } from "./routeTree.gen";
+import { createRouter } from '@tanstack/react-router';
+import { RouterServer } from '@tanstack/react-router/ssr/server';
+import { routeTree } from './routeTree.gen';
 
 export default function entryServer() {
-    const router = createRouter({
-        routeTree,
-        defaultPreload: "intent",
-    }) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
-    return <StartServer router={router} />;
+  const router = createRouter({
+    routeTree,
+    defaultPreload: 'intent',
+  }) as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  return <RouterServer router={router} />;
 }

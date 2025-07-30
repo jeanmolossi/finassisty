@@ -16,7 +16,6 @@
     "@base-ui-components/react": "^1.0.0-beta.1",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-router": "^1.129.8",
-    "@tanstack/react-router-server": "^1.31.24",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "workbox-window": "^7.0.0"
@@ -24,6 +23,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@tanstack/router-plugin": "^1.129.8",
+    "@types/express": "^5.0.3",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
