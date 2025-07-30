@@ -27,7 +27,7 @@ These instructions apply to all files **outside of `app/`**. The main backend is
 ## Developing
 
 - Always document the work. Ensure related functions or components include meaningful docstrings when relevant.
-  - If more context about the product is needed, put a doc file in `docs/product/`
+  - If more context about the product is needed, put a doc file in `docs/product/`.
 
 ## Ending development
 
