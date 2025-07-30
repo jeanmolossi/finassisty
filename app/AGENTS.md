@@ -21,10 +21,11 @@ These rules apply to everything inside the `app/` folder (React + TypeScript PWA
 
 ## Developing
 
-- Always document the work. Grants that have docstrings when it's relevant.
+- Always document the work. Ensure related functions or components include meaningful\
+  docstrings when relevant.
   - If more context about the product is needed, put a doc file in `docs/product/`
 
 ## Ending development
 
 - Run `make lint` and make sure there are no lint issues.
-  - In case there are two or more rules conflicting, disable de less relevant rule
+  - If two or more lint rules conflict, disable the least relevant rule.
