@@ -3,6 +3,7 @@
 These rules apply to everything inside the `app/` folder (React + TypeScript PWA).
 
 ## Code style
+
 - Follow the project `.editorconfig` for indentation (4 spaces for `.ts`/`.tsx`).
 - Use functional React components and hooks.
 - Keep imports using the `@/` alias for paths under `src/` when possible.
@@ -11,4 +12,19 @@ These rules apply to everything inside the `app/` folder (React + TypeScript PWA
 - Keep `pnpm-lock.yaml` in sync when dependencies change.
 
 ## Pull Requests
+
 - Summarize frontend changes and include lint/type-check results in the PR description.
+
+## Starting development
+
+- Run `make install-deps` and make sure the packages are installed
+
+## Developing
+
+- Always document the work. Grants that have docstrings when it's relevant.
+  - If more context about the product is needed, put a doc file in `docs/product/`
+
+## Before open Pull Request
+
+- Run `make lint` and make sure there are no lint issues.
+  - In case there are two or more rules conflicting, disable de less relevant rule
