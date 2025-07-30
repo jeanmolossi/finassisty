@@ -63,7 +63,7 @@ func main() {
 
 	e.GET("/", controllers.Home)
 	e.GET("/acessar", controllers.Login)
-	e.GET("/dashboard", controllers.Dashboard(staticDir), middlewares.RequireSession())
+	e.GET("/dashboard", controllers.Dashboard(), middlewares.RequireSession())
 
 	e.Static("/", staticDir)
 

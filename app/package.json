@@ -16,6 +16,7 @@
     "@base-ui-components/react": "^1.0.0-beta.1",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-router": "^1.129.8",
+    "@tanstack/react-router-server": "^1.31.24",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "workbox-window": "^7.0.0"

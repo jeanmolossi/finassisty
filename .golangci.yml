@@ -14,6 +14,11 @@ linters:
       max-open-files: 2048
       severity: error
       enable-all-rules: true
+      rules:
+        - name: line-length-limit
+          arguments: [90]
+        - name: package-comments
+          disabled: true
       directives:
         - name: specify-disable-reason
           severity: error
