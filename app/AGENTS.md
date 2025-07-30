@@ -14,18 +14,3 @@ These rules apply to everything inside the `app/` folder (React + TypeScript PWA
 ## Pull Requests
 
 - Summarize frontend changes and include lint/type-check results in the PR description.
-
-## Getting started
-
-- Run `make install-deps` and make sure the packages are installed
-
-## Developing
-
-- Always document the work. Ensure related functions or components include meaningful\
-  docstrings when relevant.
-  - If more context about the product is needed, put a doc file in `docs/product/`
-
-## Ending development
-
-- Run `make lint` and make sure there are no lint issues.
-  - If two or more lint rules conflict, disable the least relevant rule.
