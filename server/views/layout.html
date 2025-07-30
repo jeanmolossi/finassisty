@@ -1,0 +1,15 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{ if .Description }}<meta name="description" content="{{ .Description }}">{{ end }}
+    <title>{{ .Title }}</title>
+    <script async src="https://unpkg.com/web-vitals@3/dist/web-vitals.iife.js"></script>
+</head>
+<body>
+{{ template "body" . }}
+</body>
+</html>
+{{ end }}

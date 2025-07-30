@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as InTouchIndexRouteImport } from './routes/in-touch/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as AcessarIndexRouteImport } from './routes/acessar/index'
 import { Route as AboutIndexRouteImport } from './routes/about/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/dashboard/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcessarIndexRoute = AcessarIndexRouteImport.update({
+  id: '/acessar/',
+  path: '/acessar/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutIndexRoute = AboutIndexRouteImport.update({
   id: '/about/',
   path: '/about/',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/acessar': typeof AcessarIndexRoute
   '/in-touch': typeof InTouchIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/acessar': typeof AcessarIndexRoute
   '/in-touch': typeof InTouchIndexRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about/': typeof AboutIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/acessar/': typeof AcessarIndexRoute
   '/in-touch/': typeof InTouchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/dashboard' | '/in-touch'
+  fullPaths: '/' | '/about' | '/dashboard' | '/acessar' | '/in-touch'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/dashboard' | '/in-touch'
-  id: '__root__' | '/' | '/about/' | '/dashboard/' | '/in-touch/'
+  to: '/' | '/about' | '/dashboard' | '/acessar' | '/in-touch'
+  id: '__root__' | '/' | '/about/' | '/dashboard/' | '/acessar/' | '/in-touch/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutIndexRoute: typeof AboutIndexRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  AcessarIndexRoute: typeof AcessarIndexRoute
   InTouchIndexRoute: typeof InTouchIndexRoute
 }
 
@@ -83,6 +93,13 @@ declare module '@tanstack/react-router' {
       path: '/in-touch'
       fullPath: '/in-touch'
       preLoaderRoute: typeof InTouchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acessar/': {
+      id: '/acessar/'
+      path: '/acessar'
+      fullPath: '/acessar'
+      preLoaderRoute: typeof AcessarIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutIndexRoute: AboutIndexRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  AcessarIndexRoute: AcessarIndexRoute,
   InTouchIndexRoute: InTouchIndexRoute,
 }
 export const routeTree = rootRouteImport
