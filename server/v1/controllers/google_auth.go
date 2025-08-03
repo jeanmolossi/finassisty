@@ -140,5 +140,14 @@ func GoogleCallback(c echo.Context) error {
 			map[string]string{"error": "failed to get user info"})
 	}
 
-	return c.JSON(http.StatusOK, user)
+	c.SetCookie(&http.Cookie{
+		Name:     "session",
+		Value:    user.Id,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   c.IsTLS(),
+		SameSite: http.SameSiteLaxMode,
+	})
+
+	return c.Redirect(http.StatusFound, "/dashboard")
 }

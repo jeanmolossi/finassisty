@@ -2,10 +2,6 @@ package main
 
 import (
 	"context"
-	"finassisty/server/config"
-	"finassisty/server/infrastructure/support/telemetry"
-	"finassisty/server/v1/controllers"
-	"finassisty/server/v1/middlewares"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +10,12 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"finassisty/server/config"
+	"finassisty/server/infrastructure/support/telemetry"
+	"finassisty/server/v1/controllers"
+	"finassisty/server/v1/middlewares"
+	"finassisty/server/views"
 )
 
 func main() {
@@ -41,16 +43,28 @@ func main() {
 		MaxAge:           300,
 	}))
 
+	renderer, err := views.NewRenderer()
+	if err != nil {
+		panic(err)
+	}
+	e.Renderer = renderer
+
 	api := e.Group("/api/v1")
 	api.GET("/hello", controllers.Hello)
 	api.GET("/healthcheck", controllers.Healthcheck)
 	api.GET("/auth/google/login", controllers.GoogleLogin)
 	api.GET("/auth/google/callback", controllers.GoogleCallback)
+	api.GET("/auth/session", controllers.CheckSession)
 
 	staticDir := "app/dist"
 	if _, err := os.Stat(staticDir); os.IsNotExist(err) {
 		staticDir = "app"
 	}
+
+	e.GET("/", controllers.Home)
+	e.GET("/acessar", controllers.Login)
+	e.GET("/dashboard", controllers.Dashboard(), middlewares.RequireSession())
+
 	e.Static("/", staticDir)
 
 	go func() {

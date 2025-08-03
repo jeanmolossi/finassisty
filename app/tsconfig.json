@@ -16,8 +16,9 @@
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["*"],
+      "@tanstack/react-router/ssr/server": ["../node_modules/@tanstack/react-router/dist/esm/ssr/server.d.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/types"]
 }
